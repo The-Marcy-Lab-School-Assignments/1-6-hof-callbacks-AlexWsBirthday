@@ -1,3 +1,4 @@
+//console.log('1. --------------------------------------------------------------------------------------------------')
 const myForEach = (array, cbfunc) => {
   let newArray = []; //to not mutate the array fed in as an argument, creating a new empty "box" to feed the altered results into
   for (i = 0; i < array.length; i++) { //going through each index of the array fed into the HOF
@@ -12,11 +13,11 @@ const myForEach = (array, cbfunc) => {
 // console.log(myForEach(myNames, greeting))
 // console.log(myNames)
 
-
+//console.log('2. --------------------------------------------------------------------------------------------------')
 const myMap = (array, cbf) => {
   //guard clause! wooooo!
   if (typeof cbf !== 'function') {
-    throw new Error(`First param must be a function but received ${typeof callback}`)
+    throw new Error(`Second param must be a function but received ${typeof callback}`)
   }
 
   let newMap = []; //setting up new box to not alter the original elements in the argument array 
@@ -34,44 +35,115 @@ const myMap = (array, cbf) => {
 // const length = (yup) => { return yup.length}
 // console.log(myMap(moreNames, length))
 
+//console.log('3. --------------------------------------------------------------------------------------------------')
 const myFind = (array, cbf) => {
-  //guard clause
-  // if (cbf(array[i]) !== true) {
-  //   return
-  // }
 
-  let brandNewArray = [];
   for (i = 0; i < array.length; i++) {
-      if (cbf(array[i]) == true  ) { //returning true because the callback function was able to return something
-        brandNewArray += array[i] //if the cbf returns something, the indexed element in the argument array gets pushed into a new array
-      } 
+     if (cbf(array[i]) == true  ) { //returning true because the callback function was able to return something
+        return array[i] //thus, we return a brand new array or nothing at all (undefined). We also immediately return it after the first instance of a truthy value pops up and is passed into the new box we made. 
+     }
     }
-    return brandNewArray //thus, we return a brand new array or nothing at all (undefined)
+    return undefined; //make sure undefined is outside the loop, incase the loop fully iterates through the array and finds nothing 
+  };
+
+// const moreNames = ['Alice', 'Bob', 'Charlie', 'Debbie', 'Alex'];
+// const nameFinderA = (yup) => { return yup.includes('A')}
+
+// console.log(myFind(moreNames, nameFinderA))
+// console.log(moreNames)
+
+// const nums = [1, 2, 3]
+// const firstEvenNum = myFind(nums, (num) => num % 2 === 0);
+
+// console.log(typeof firstEvenNum)
+// console.log(firstEvenNum)
+
+//console.log('4. --------------------------------------------------------------------------------------------------')
+const myFilter = (array, filter) => {
+  let newArray2 = []; //creating that new box
+  for (i = 0; i < array.length; i++) { //iterate through the array
+    if (filter(array[i]) == true  ) { //checking if calling the cbf on the array returns anything (making it truthy)
+      newArray2.push(array[i]) //if it does return truthy, push the element that passes "true" into the new box
+    } else {
+      continue //if the element doesn't return "true", continue on to the next element in the array
+    }
+  }
+  return newArray2 //I accidentally had the return statement inside of the for loop, which cut the loop early after the first "finding."
+};
+
+// const moreNames = ['Alice', 'Bob', 'Charlie', 'Debbie', 'Bill', 'Amanda', 'Zephir', 'Benris'];
+// const nameFinderB = (yup) => { return yup.includes('B')}
+// console.log(myFilter(moreNames, nameFinderB))
+
+
+//console.log('5. --------------------------------------------------------------------------------------------------')
+const sortWords = (array) => {
+  let sortedArray = [...array]; //SPRED THAT BRED!!! making a copy of the array, since the array is full of primitive data types, is possible. This makes it so that sort() doesn't mutate the original array.
+  return sortedArray.sort(); //sorting the copy of the array that we made using .sort()
+};
+
+console.log(sortWords(["big", "mode", "Apple"]))
+
+//console.log('6. --------------------------------------------------------------------------------------------------')
+const sortNumbers = (array) => {
+  let sortedArray2 = [...array]; //SPRED THAT BRED!!! making a copy of the array, since the array is full of primitive data types, is possible. This makes it so that sort() doesn't mutate the original array.
+  return sortedArray2.sort((a, b) => a - b);
+};
+
+
+//console.log('7. --------------------------------------------------------------------------------------------------')
+const sortNumbersBetter = (array, isDescending) => {
+
+  //guard clause
+  if (!array) {
+    throw new Error("Please enter an array, paired with a boolean.")
   }
 
-const moreNames = ['Alice', 'Bob', 'Charlie', 'Debbie'];
-const nameFinderB = (yup) => { return yup.includes('B')}
+  //conditional statement, if the parameters meet that condition 
+ if (isDescending === true) {
+    let sortedArray2 = [...array]; //SPRED THAT BRED!!! making a copy of the array, since the array is full of primitive data types, is possible. This makes it so that sort() doesn't mutate the original array.
+  return sortedArray2.sort((a, b) => b - a);
+  }
 
-console.log(myFind(moreNames, nameFinderB))
 
-
-const myFilter = () => {
+//default statement or default route, if the parameters don't meet that condition 
+  let sortedArray2 = [...array]; //SPRED THAT BRED!!! making a copy of the array, since the array is full of primitive data types, is possible. This makes it so that sort() doesn't mutate the original array.
+  return sortedArray2.sort((a, b) => a - b);
 };
 
-const sortWords = () => {
+
+//console.log('8. --------------------------------------------------------------------------------------------------')
+const sortUsersByOrder = (listOfUsernames) => {
+  /*
+  1. let usersMapped - creating a variable which will hold the end result (a copy of the inserted array, sorted by order)
+  
+  2. listOfUsernames.slice() - copying the array passed as an argument into the function, using the .slice() method to bring back a shallow copy. Honestly I don't know how this doesn't count as a separate array from the original.
+ 
+  3. .slice().sort() - you can layer methods as long as you put them in the right order. I'm taking the full slice (shallow copy) of the arg array and passing it through the sort method.
+  
+  4. .sort((a, b) => (a.order - b.order)) - I'm customizing the compare function built inside of the sort method, by using an arrow function to ask it to
+  not stringify 
+  */
+  let usersMapped = listOfUsernames.slice().sort((a, b) => (a.order - b.order)) 
+ return usersMapped
+}
+  
+
+
+const users = [
+  { name: 'Alice', order: 1 },
+  { name: 'Bob', order: 3 },
+  { name: 'Charlie', order: 2 },
+  { name: 'Debbie', order: 4 },
+];
+console.log(sortUsersByOrder(users))
+
+//console.log('9. --------------------------------------------------------------------------------------------------')
+const sortUsersByName = (listOfUsernames) => {
+  let usersMappedByName = listOfUsernames.slice().sort((a, b) => (a.name - b.name)) //
+  return usersMappedByName
 };
 
-const sortNumbers = () => {
-};
-
-const sortNumbersBetter = () => {
-};
-
-const sortUsersByOrder = () => {
-};
-
-const sortUsersByName = () => {
-};
 
 module.exports = {
   myForEach,
