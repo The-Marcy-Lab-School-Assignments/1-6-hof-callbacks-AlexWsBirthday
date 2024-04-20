@@ -82,7 +82,7 @@ const sortWords = (array) => {
   return sortedArray.sort(); //sorting the copy of the array that we made using .sort()
 };
 
-console.log(sortWords(["big", "mode", "Apple"]))
+// console.log(sortWords(["big", "mode", "Apple"]))
 
 //console.log('6. --------------------------------------------------------------------------------------------------')
 const sortNumbers = (array) => {
@@ -122,7 +122,7 @@ const sortUsersByOrder = (listOfUsernames) => {
   3. .slice().sort() - you can layer methods as long as you put them in the right order. I'm taking the full slice (shallow copy) of the arg array and passing it through the sort method.
   
   4. .sort((a, b) => (a.order - b.order)) - I'm customizing the compare function built inside of the sort method, by using an arrow function to ask it to
-  not stringify 
+  not stringify and sort, but fetch the values in the object key "order" (inside the object elements of the array) and sort them by ascending value. 
   */
   let usersMapped = listOfUsernames.slice().sort((a, b) => (a.order - b.order)) 
  return usersMapped
@@ -130,20 +130,43 @@ const sortUsersByOrder = (listOfUsernames) => {
   
 
 
-const users = [
-  { name: 'Alice', order: 1 },
-  { name: 'Bob', order: 3 },
-  { name: 'Charlie', order: 2 },
-  { name: 'Debbie', order: 4 },
-];
-console.log(sortUsersByOrder(users))
+// const users = [
+//   { name: 'Alice', order: 1 },
+//   { name: 'Bob', order: 3 },
+//   { name: 'Charlie', order: 2 },
+//   { name: 'Debbie', order: 4 },
+// ];
+// console.log(sortUsersByOrder(users))
 
 //console.log('9. --------------------------------------------------------------------------------------------------')
 const sortUsersByName = (listOfUsernames) => {
-  let usersMappedByName = listOfUsernames.slice().sort((a, b) => (a.name - b.name)) //
-  return usersMappedByName
+  let copy = listOfUsernames.slice().sort((a, b) => {
+    const nameA = a.name.toUpperCase(); //why are we ignoring upper and lower case?
+    const nameB = b.name.toUpperCase();
+
+    if (nameA < nameB) {
+      return -1 //how are we comparing the two alphanumerically? what makes nameA 'less' than nameB?
+    }
+
+    if (nameA > nameB) {
+      return 1
+    }
+
+    return 0 
+  });
+
+  return copy
 };
 
+//test
+const users = [
+  { name: 'Charlie', order: 2 },
+  { name: 'Alice', order: 1 },
+  { name: 'Debbie', order: 4 },
+  { name: 'Bob', order: 3 } 
+];
+
+console.log(sortUsersByName(users))
 
 module.exports = {
   myForEach,
