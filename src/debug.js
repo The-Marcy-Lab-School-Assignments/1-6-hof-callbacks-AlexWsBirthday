@@ -1,7 +1,8 @@
 const myEvery = (arr, callback) => {
   for (const values of arr) {
     if (callback(values) == false) { //i made it so the condition was asking for a falsy value (not exclusively false, otherwise it'd be ===) and to return false if the condition is met.
-      return false};
+      return false
+    };
   }
   return true;
 };
@@ -30,9 +31,21 @@ const sortUsersBy = (users, sortingFunction) => {
 
 
 
+/*
+   Alex's Version of the function that currently fails the test. You almost had it!!!
+*/
+const logEachName2 = (names) => {
+  return names.forEach((name, index) => console.log(`'${name}', ${index}, `) + console.log(names));
+};
 
+/*
+Madhur Feedback - the .forEach() method can accept an element, it's index, and the whole array 
+                  as parameters in the following order: (element, index, array).
+                  In this case, we give each element the variable "name", each index is given the variable "index", 
+                  and the array as a whole is given the variable "array". We can simply just console.log each :]
+*/
 const logEachName = (names) => {
- return names.forEach((name, index) => console.log(`'${name}', ${index}, `) + console.log(names));
+  return names.forEach((name, index, array) => console.log(name, index, array));
 };
 
 // const names = ['Alice', 'Bob', 'Charlie', 'Diana'];
@@ -40,7 +53,7 @@ const logEachName = (names) => {
 
 
 const logEachUserBio = (users) => {
-return users.forEach((user) => console.log(user.bio));
+  return users.forEach((user) => console.log(user.bio));
 };
 
 const users = [
